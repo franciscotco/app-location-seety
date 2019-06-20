@@ -21,6 +21,7 @@ export const getCloseReports = (req, res) => {
    const { lat, long, sort } = req.params;
    const latitude = parseFloat(lat);
    const longitude = parseFloat(long);
+   console.log("GET")
    if (!latitude || ! longitude || !sort) {
       return res.status(400).send({
          message: "Error: Wrong params value {lat: number / long: number / sort: string}"
@@ -51,12 +52,12 @@ export const getCloseReports = (req, res) => {
          {$project: {
             title: 1,
             time: 1,
-            "position.latitude": 1,
-            "position.longitude": 1
+            latitude: "$position.latitude",
+            longitude: "$position.longitude"
          }}
       ]).toArray()
       .then((resultat) => {
-         console.log("Resultat :", resultat);
+         // console.log("Resultat :", resultat);
          return resultat
       })
       .then((resultat) => {
@@ -64,10 +65,9 @@ export const getCloseReports = (req, res) => {
 
          if (resultat) {
          resultat.forEach(elem => {
-            console.log("Elem :", elem);
-            const { position } = elem;
-            const distance = distanceTwo(latitude, longitude, position.latitude, position.longitude);
-            console.log("Distance :", distance);
+            // console.log("Elem :", elem);
+            const distance = distanceTwo(latitude, longitude, elem.latitude, elem.longitude);
+            // console.log("Distance :", distance);
             if (distance <= RAYON) {
                elem[KEY_DISTANCE] = distance;
                parsedResult.push(elem);
@@ -75,6 +75,7 @@ export const getCloseReports = (req, res) => {
          })
          sortReports(parsedResult, sort);
       }
+      console.log("ParsedResult :", parsedResult);
          return parsedResult;
       })
       .then((parsedResult) => res.send(parsedResult))

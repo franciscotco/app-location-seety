@@ -1,19 +1,35 @@
 import React from 'react';
-import logo from './logo.svg';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+// import logo from './logo.svg';
 
 // Components
 import ReportView from './components/ReportView';
 import ReportList from './components/ReportList';
 
+// Constant
+import {ROOT, VIEW_REPORT, LIST_REPORT} from './constants';
+
 import './App.css';
+
+function NoMatch() {
+  return (
+     <div>
+        NoMatch
+        <br />
+        <a href="/">
+           Back to Home
+        </a>
+     </div>
+  )
+}
 
 class App extends React.Component {
 
-  state = {
-    response: '',
-    post: '',
-    responseToPost: '',
-  };
+  // state = {
+  //   response: '',
+  //   post: '',
+  //   responseToPost: '',
+  // };
 
   // componentDidMount() {
   //   this.callApi()
@@ -21,33 +37,39 @@ class App extends React.Component {
   //     .catch(err => console.log(err));
   // }
   
-  callApi = async () => {
-    const response = await fetch('/api/hello');
-    const body = await response.json();
-    if (response.status !== 200) throw Error(body.message);
+  // callApi = async () => {
+  //   const response = await fetch('/api/hello');
+  //   const body = await response.json();
+  //   if (response.status !== 200) throw Error(body.message);
     
-    return body;
-  };
+  //   return body;
+  // };
 
-  handleSubmit = async e => {
-    e.preventDefault();
-    const response = await fetch('/api/world', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ post: this.state.post }),
-    });
-    const body = await response.text();
+  // handleSubmit = async e => {
+  //   e.preventDefault();
+  //   const response = await fetch('/api/world', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({ post: this.state.post }),
+  //   });
+  //   const body = await response.text();
     
-    this.setState({ responseToPost: body });
-  };
+  //   this.setState({ responseToPost: body });
+  // };
   
 render() {
   return (
     <div>
-      <ReportView />
-      <ReportList />
+      <Router>
+            <Switch>
+              <Route exact path={ROOT} component={ReportList}/>
+              <Route path={VIEW_REPORT} component={ReportView}/>
+              <Route path={LIST_REPORT} component={ReportList}/>
+              <Route component={NoMatch}/>
+            </Switch>
+        </Router>
       </div>
   );
 }

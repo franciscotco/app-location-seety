@@ -32,7 +32,7 @@ export default function ReportView() {
         headers: {
           'Content-Type': 'application/json',
       },
-        body: JSON.stringify({ title, lat: location.coords.latitude, long: location.coords.longitude }),
+        body: JSON.stringify({ title, lat: location.latitude, long: location.longitude }),
       });
       const body = await response.json();
       console.log("Reponse :", body);

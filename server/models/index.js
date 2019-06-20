@@ -12,8 +12,7 @@ const connectDb = () => {
    });
  };
  
- const models = { Report };
+const models = { Report };
  
- export { connectDb };
- 
- export default models;
+export { connectDb };
+export default models;

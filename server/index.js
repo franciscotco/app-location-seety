@@ -2,12 +2,12 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 
-// import routes from './routes';
-// import models, { connectDb } from './models';
+import routes from './routes';
+import models, { connectDb } from './models';
 
 import 'dotenv/config';
 
-// export { connectDb };
+export { connectDb };
 
 export const app = express();
 
@@ -15,7 +15,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// app.use('/report', routes.report);
+app.use('/report', routes.report);
 
 const eraseDatabaseOnSync = true;
 
@@ -32,11 +32,11 @@ app.get('/api/hello', (req, res) => {
    );
  });
 
-// connectDb().then(() => {
-//   if (eraseDatabaseOnSync) {
-//     console.log("DELETE")
-//   }
+connectDb().then(() => {
+  if (eraseDatabaseOnSync) {
+    console.log("DELETE")
+  }
   app.listen(port, () =>
     console.log(`Example app listening on port ${process.env.PORT}!`)
   );
-// });
+});
