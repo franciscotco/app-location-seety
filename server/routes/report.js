@@ -1,9 +1,9 @@
 import { Router } from 'express';
 
-import { getCloseReports, postReport} from '../controllers/report';
+import controllers from '../controllers';
 
 const router = Router();
-router.get('/:lat/:long/:sort', getCloseReports);
-router.post('/', postReport)
+router.get('/:lat/:long/:sort', controllers.getCloseReports);
+router.post('/', controllers.postReport);
 
 export default router;

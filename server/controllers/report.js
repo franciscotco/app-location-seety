@@ -87,6 +87,7 @@ export const getCloseReports = (req, res) => {
 export const postReport = (req, res) => {
    const { title, lat, long } = req.body;
 
+   console.log("Body :", req.body);
    if(!req.body || !req.body.title || !req.body.lat || !req.body.long) {
       return res.status(400).send({
           message: "Error: post request require {title: string, lat: number, long: number}"
