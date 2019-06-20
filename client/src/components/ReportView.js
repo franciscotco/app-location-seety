@@ -1,14 +1,16 @@
 import React from 'react';
+import useLocation from './useLocation';
 
 export default function ReportView() {
    const [ title, setTitle ] = React.useState("");
-   const [ location, setLocation ] = React.useState(null);
+   // const [ location, setLocation ] = React.useState(null);
+   const location = useLocation(false);
    const [ message, setMessage ] = React.useState(null);
 
-   React.useEffect(() => {
-      console.log("Location Change");
-      navigator.geolocation.getCurrentPosition(location => setLocation(location));
-   }, []);
+   // React.useEffect(() => {
+   //    console.log("Location Change");
+   //    navigator.geolocation.getCurrentPosition(location => setLocation(location));
+   // }, []);
 
    const handleInputText = (e) => setTitle(e.target.value);
 
