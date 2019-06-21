@@ -1,22 +1,23 @@
 import mongoose from 'mongoose';
 
 // Constant
-import { TIME, TITLE } from '../constants';
+import { TIME, TITLE, POSITION } from '../constants';
 
-const Coordinates = new mongoose.Schema({
-   longitude: {
-      type: Number,
-      required: true,
-   },
-   latitude: {
-      type: Number,
-      required: true,
-   }
+const pointSchema = new mongoose.Schema({
+   type: {
+      type: String,
+      enum: ['Point'],
+      required: true
+    },
+    coordinates: {
+      type: [Number],
+      required: true
+    }
 })
 
 const reportSchema = new mongoose.Schema({
-   position: {
-      type: Coordinates,
+   [POSITION]: {
+      type: pointSchema,
       required: true,
    },
    [TITLE]: {

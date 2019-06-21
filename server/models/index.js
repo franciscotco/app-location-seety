@@ -7,7 +7,6 @@ import 'dotenv/config';
 const connectDb = () => {
    return mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true }, (error, client) => {
       if (error) throw error;
-
       return client;
    });
  };

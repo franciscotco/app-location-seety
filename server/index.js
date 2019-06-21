@@ -17,26 +17,19 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/report', routes.report);
 
-const eraseDatabaseOnSync = true;
+const eraseDatabaseOnSync = false;
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 
-app.get('/api/hello', (req, res) => {
-   res.send({ express: 'Hello From Express' });
- });
-
- app.post('/api/world', (req, res) => {
-   console.log(req.body);
-   res.send(
-     `I received your POST request. This is what you sent me: ${req.body.post}`,
-   );
- });
-
-connectDb().then(() => {
+connectDb().then(async () => {
   if (eraseDatabaseOnSync) {
+    await models.Report.deleteMany({});
     console.log("DELETE")
   }
   app.listen(port, () =>
     console.log(`Example app listening on port ${process.env.PORT}!`)
   );
+}).catch(err => {
+  console.log(err);
+  process.exit(1);
 });
