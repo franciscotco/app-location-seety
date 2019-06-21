@@ -27,7 +27,7 @@ connectDb().then(async () => {
     console.log("DELETE")
   }
   app.listen(port, () =>
-    console.log(`Example app listening on port ${process.env.PORT}!`)
+    console.log(`App listening on port ${process.env.PORT}!`)
   );
 }).catch(err => {
   console.log(err);

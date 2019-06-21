@@ -6,10 +6,8 @@
   "scripts": {
     "start": "nodemon --exec babel-node server/index.js",
     "client": "cd client && yarn start",
-    "build": "babel server --out-dir test",
-    "server": "node test/index.js",
-    "olddev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
-    "dev": "yarn server & yarn client",
+    "build": "babel server --out-dir dist",
+    "server": "node dist/index.js",
     "test": "mocha --require @babel/register ./server/tests --recursive"
   },
   "keywords": [],
