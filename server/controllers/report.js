@@ -5,7 +5,7 @@ import models from '../models';
 import { isExistInArray, checkLongAndLat } from '../utils';
 
 // Constant
-import { COLLECTION_NAME, SORT_BY_DISTANCE, SORT_KEYS, METERS_PER_MILE, POSITION } from '../constants';
+import { COLLECTION_NAME, SORT_BY_DISTANCE, SORT_KEYS, METERS_PER_MILE, POSITION, TITLE, TIME } from '../constants';
 
 export const ERROR_GET_REPORT_WRONG_PARAM = "Error: Wrong params value {lat: number / long: number / sort: string}";
 export const ERROR_POST_REPORT_WRONG_PARAM = "Error: post request require {title: string, lat: number, long: number}";

@@ -2,13 +2,15 @@
   "name": "server-geolocation-seety",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "serevr/index.js",
   "scripts": {
-    "start": "nodemon --exec babel-node src/index.js",
+    "start": "nodemon --exec babel-node server/index.js",
     "client": "cd client && yarn start",
-    "server": "nodemon --exec babel-node server/index.js",
-    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
-    "test": "mocha --require @babel/register ./src/tests --recursive"
+    "build": "babel server/index.js -d dist",
+    "server": "npm run build && node dist/index.js",
+    "olddev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+    "dev": "yarn server & yarn client",
+    "test": "mocha --require @babel/register ./server/tests --recursive"
   },
   "keywords": [],
   "author": "",
@@ -16,7 +18,7 @@
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.5",
-    "@babel/node": "^7.4.5",
+    "@babel/node": "^7.0.0",
     "@babel/preset-env": "^7.4.5",
     "@babel/register": "^7.4.4",
     "chai": "^4.2.0",
@@ -25,6 +27,11 @@
     "supertest": "^4.0.2"
   },
   "dependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.0",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-jest": "^24.8.0",
+    "babel-preset-es2015": "^6.24.1",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "create-react-app": "^3.0.1",
