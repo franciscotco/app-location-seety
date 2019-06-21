@@ -1,51 +1,65 @@
 import React from 'react';
 import useLocation from './useLocation';
 
+// Style
+import './ReportView.css';
+
 export default function ReportView() {
    const [ title, setTitle ] = React.useState("");
-   // const [ location, setLocation ] = React.useState(null);
    const location = useLocation(false);
    const [ message, setMessage ] = React.useState(null);
 
-   // React.useEffect(() => {
-   //    console.log("Location Change");
-   //    navigator.geolocation.getCurrentPosition(location => setLocation(location));
-   // }, []);
-
    const handleInputText = (e) => setTitle(e.target.value);
+
+   const postForm = async () => {
+      if (!location)
+         return setMessage("Enable geolocation and refresh !");
+      const response = await fetch('/report', {
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+         },
+         body: JSON.stringify({ title, lat: location.latitude, long: location.longitude }),
+      });
+      const body = await response.json();
+      if (response.status !== 200) {
+         setMessage(body.message);
+         throw Error(body.message);
+      }
+      setMessage(renderValidForm(body.title, body.position.coordinates[0], body.position.coordinates[1]));
+      setTitle("");
+   }
 
    const handleSubmitForm = async (e) => {
       e.preventDefault();
 
-      if (!location)
-         return setMessage("Enable geolocation and refresh !");
-      // let test;
-      // function(location) {
-      //    console.log(location.coords.latitude);
-      //    console.log(location.coords.longitude);
-      //    console.log(location.coords.accuracy);
-      //  });
-      console.log("Location :", location);
-      // console.log("test :", test)
-      const response = await fetch('/report', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-      },
-        body: JSON.stringify({ title, lat: location.latitude, long: location.longitude }),
-      });
-      const body = await response.json();
-      console.log("Reponse :", body);
-      setMessage("Create new position : " + body.title + " at latitude:" + body.position.latitude + " and longitude :" + body.position.longitude);
-      setTitle("");
+      postForm().catch(err => console.log(err));
    };
 
+   const renderValidForm = (title, longitude, latitude) => {
+      return (
+         <div>
+            Create new position : <strong>{title}</strong>
+            <ul>
+               <li>Longitude : <strong>{longitude}</strong></li>
+               <li>Latitude : <strong>{latitude}</strong></li>
+            </ul>
+         </div>
+      );
+   }
+
    return (
-      <div>
-         {message}
-         Post Report
-         <input type="text" onChange={handleInputText} value={title}/>
-         <button onClick={handleSubmitForm}>Submit</button>
+      <div className="container-report-view">
+         <div>Post Report</div>
+         <div className="form-report-view">
+            <div className="element-form-report-view">
+               Title: <input type="text" onChange={handleInputText} value={title}/>
+            </div>
+            <div className="element-form-report-view">
+               <div role="button" onClick={handleSubmitForm} className="submit-report-view">Submit</div>
+            </div>
+         </div>
+         <div>{message}</div>
       </div>
    );
 }

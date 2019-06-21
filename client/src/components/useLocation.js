@@ -4,7 +4,6 @@ export default function useLocation(refresh) {
    const [ location, setLocation ] = React.useState({longitude: null, latitude: null});
 
    React.useEffect(() => {
-      console.log("Location Change");
       navigator.geolocation.getCurrentPosition(location => {
          if (location) {
             setLocation({

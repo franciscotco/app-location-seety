@@ -1,0 +1,19 @@
+.container-nav-top-bar {
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+}
+
+.element-nav-top-bar {
+   width: 100%;
+   padding: 10px;
+   border: 1px solid rgb(232, 232, 232);
+   cursor: pointer;
+   text-decoration: none;
+   color: rgb(37, 56, 88);
+   text-align: center;
+}
+
+.element-nav-top-bar:hover {
+   background-color: rgb(222, 235, 255);
+}

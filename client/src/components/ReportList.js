@@ -3,73 +3,67 @@ import React from 'react';
 // Component
 import useGetReport from './useGetReport';
 import useLocation from './useLocation';
+import ReportListHeader from './ReportListHeader';
 
 // Constant
-import { TITLE, TIME, LONGITUDE, LATITUDE, DISTANCE } from '../constants';
+import { TITLE, TIME, POSITION, COORDINATES } from '../constants';
+
+// Style
+import './ReportList.css';
 
 export const destruct = (keys, obj) => keys.reduce((a, c) => obj[c], {});
 
 const DisplayColumn = ({data, style}) => <div className={`column-report-list ${style}-report-list`}>{data}</div>;
 
 const columnTitle = (props) => {
-   // const title = destruct([TITLE], props);
-
-   console.log("Props :", props);
-   return <DisplayColumn data={props} style={props} />;
+   return <DisplayColumn key={props} data={props} style={TITLE} />;
 }
 
 const columnTime = (props) => {
-   return <DisplayColumn data={props} style={props} />;
+   const date = new Date(props);
+
+   return <DisplayColumn key={props} data={date.toLocaleString()} style={TIME} />;
 }
 
 const columnLatitude = (props) => {
-   return <DisplayColumn data={props} style={props} />;
+   return <DisplayColumn key={props} data={props} style={POSITION} />;
 }
 
 const columnLongitude = (props) => {
-   return <DisplayColumn data={props} style={props} />;
+   return <DisplayColumn key={props} data={props} style={POSITION} />;
 }
 
-const headerNames = {
-   [TITLE]: "Title",
-   [TIME]: "Time",
-   [LONGITUDE]: "Longitude",
-   [LATITUDE]: "Latitude"
+const columnPosition = (props) => {
+   const coordinates = destruct([COORDINATES], props);
+   const longitude = coordinates[0];
+   const latitude = coordinates[1];
+
+   return [
+      columnLongitude(longitude),
+      columnLatitude(latitude)
+   ]
 }
 
-const HeaderReportList = ({setSort}) => {
-   const headers = [];
-
-   const handleOnClick = (sort) => () => {
-      if (sort === LONGITUDE || sort === LATITUDE)
-         setSort(DISTANCE);
-      else
-         setSort(sort)
-   };
-
-   Object.keys(fields).forEach(key => {
-      const header = <div key={key} onClick={handleOnClick(key)}>{headerNames[key]}</div>
-      if (headerNames[key])
-         headers.push(header);
-   })
-   return headers;
-}
-
-const fields = {
+export const fields = {
    [TITLE]: columnTitle,
    [TIME]: columnTime,
-   [LONGITUDE]: columnLongitude,
-   [LATITUDE]: columnLatitude,
+   [POSITION]: columnPosition,
 }
 
 export default function ReportList() {
    const [ sort, setSort ] = React.useState(TIME);
-   const location = useLocation();
-   const reports = useGetReport(location.latitude, location.longitude, sort);
-   console.log("Reports :", reports);
+   const [ refresh, setRefresh ] = React.useState(false);
+   const location = useLocation(false);
+   const reports = useGetReport(location.latitude, location.longitude, sort, refresh);
+
+   if (!reports) {
+      setRefresh(!refresh);
+      return null;
+   }
+
    return (
       <div>
-         <HeaderReportList setSort={setSort}/>
+         <ReportListHeader setSort={setSort}/>
          {reports.map(elem => {
             const { _id } = elem;
             const row = [];
@@ -78,7 +72,7 @@ export default function ReportList() {
                if(fields[key])
                   row.push(fields[key](elem[key]))
             })
-            return <div key={_id}>{row}</div>;
+            return <div key={_id} className="row-report-list">{row}</div>;
          })}
       </div>
    );

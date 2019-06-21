@@ -9,8 +9,8 @@ export default function useGetReport(latitude, longitude, sort) {
             return [];
          const response = await fetch('/report/' + latitude + '/' + longitude + '/' + sort);
          const body = await response.json();
-         if (response.status !== 200) throw Error(body.message);
-       console.log("Body :", body);
+         if (response.status !== 200) 
+            throw Error(body.message);
          return body;
       }
       getReport()
@@ -21,6 +21,5 @@ export default function useGetReport(latitude, longitude, sort) {
          })
    }, [latitude, longitude, sort])
 
-   console.log("REPORT BEFORE :", reports);
    return reports;
 }
